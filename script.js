@@ -1,24 +1,52 @@
-import skinview3d from 'https://cdn.jsdelivr.net/npm/skinview3d@3.4.1/+esm';
-
-const container = document.getElementById("skin-container");
-
-const skinViewer = new skinview3d.SkinViewer({
-    domElement: container,
+let skinViewer = new skinview3d.SkinViewer({
+    canvas: document.getElementById("skin_container"),
     width: 300,
     height: 400,
-    skin: "textures/myskin.png"
+    skin: "textures/skin/myskin.png"
 });
 
-skinViewer.autoRotate = false;
+// Change viewer size
+skinViewer.width = 600;
+skinViewer.height = 800;
 
-const walk = skinViewer.animations.add(skinview3d.WalkingAnimation);
-walk.speed = 1;
+// Load another skin
+//skinViewer.loadSkin("img/skin2.png");
 
-container.addEventListener("mousemove", (event) => {
-    const rect = container.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+// Load a cape
+skinViewer.loadCape("textures/skin/cape.png");
 
-    skinViewer.player.rotation.y = x * Math.PI;       // rotación horizontal
-    skinViewer.player.rotation.x = -y * Math.PI * 0.25; // rotación vertical
-});
+// Load an elytra (from a cape texture)
+//skinViewer.loadCape("img/cape.png", { backEquipment: "elytra" });
+
+// Unload(hide) the cape / elytra
+//skinViewer.loadCape(null);
+
+// Set the background color
+skinViewer.background = 0x5a76f3;
+
+// Set the background to a normal image
+//skinViewer.loadBackground("img/background.png");
+
+// Set the background to a panoramic image
+//skinViewer.loadPanorama("img/panorama1.png");
+
+// Change camera FOV
+skinViewer.fov = 70;
+
+// Zoom out
+skinViewer.zoom = 0.5;
+
+// Rotate the player
+skinViewer.autoRotate = true;
+
+// Apply an animation
+skinViewer.animation = new skinview3d.WalkingAnimation();
+
+// Set the speed of the animation
+skinViewer.animation.speed = 3;
+
+// Pause the animation
+//skinViewer.animation.paused = true;
+
+// Remove the animation
+//skinViewer.animation = null;

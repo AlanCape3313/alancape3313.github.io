@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.4.1/bundles/skinview3d.bundle.min.js"></script>
 </head>
+
 <body>
     <header>
-        <h1>¡Hey there! I'm AlanCape12</h1>
+        <h1>¡Hey there! I'm AlanCape</h1>
         <nav>
             <a href="#portfolio">Portfolio</a>
             <a href="#proyectos">Proyects</a>
@@ -16,8 +19,11 @@
             <a href="#contacto">Contact</a>
         </nav>
     </header>
-    <div id="skin-container" style="margin:auto; width:300px; height:400px;"></div>
-    <script type="module" src="script.js"></script>
+    <div id="skin_container" style="margin:auto;"></div>
+    <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.4.1/bundles/skinview3d.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+    <canvas id="skin_container"></canvas>
 
     <section id="about">
         <h2>About me</h2>
@@ -43,4 +49,5 @@
         <p>© 2025 AlanCape</p>
     </footer>
 </body>
+
 </html>
