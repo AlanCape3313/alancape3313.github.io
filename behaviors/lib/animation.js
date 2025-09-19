@@ -1,6 +1,4 @@
-import { Clock, Object3D } from 'three';
-// Nota: No existe 'type import' en JS, así que asumimos que BoneStructure es una clase exportada en ./three/boneStructure
-import { BoneStructure } from './three/boneStructure';
+import { Clock, Object3D } from 'https://unpkg.com/three@0.126.1/build/three.module.js';
 
 const CLOCK = new Clock();
 
