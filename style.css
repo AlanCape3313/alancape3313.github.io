@@ -22,7 +22,7 @@ nav a:hover {
     text-decoration: underline;
 }
 
-.galeria {
+.galery {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -30,13 +30,21 @@ nav a:hover {
     margin: 20px;
 }
 
-.galeria img {
+.galery img {
     width: 200px;
     border: 2px solid white;
     border-radius: 5px;
     transition: transform 0.2s;
 }
 
-.galeria img:hover {
+.galery img:hover {
     transform: scale(1.05);
+}
+
+#skin_container canvas {
+    width: 100vw !important;
+    height: 100vh !important;
+    position: absolute;
+    top: 0;
+    left: 0
 }
