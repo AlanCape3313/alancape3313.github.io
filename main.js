@@ -1,0 +1,1 @@
+import './behaviors/player.js';
