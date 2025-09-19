@@ -5,48 +5,22 @@ let skinViewer = new skinview3d.SkinViewer({
     skin: "textures/skin/myskin.png"
 });
 
-// Change viewer size
+// Cambiar tamaño
 skinViewer.width = 600;
 skinViewer.height = 800;
 
-// Load another skin
-//skinViewer.loadSkin("img/skin2.png");
-
-// Load a cape
+// Cargar capa
 skinViewer.loadCape("textures/skin/cape.png");
 
-// Load an elytra (from a cape texture)
-//skinViewer.loadCape("img/cape.png", { backEquipment: "elytra" });
-
-// Unload(hide) the cape / elytra
-//skinViewer.loadCape(null);
-
-// Set the background color
+// Fondo
 skinViewer.background = 0x5a76f3;
 
-// Set the background to a normal image
-//skinViewer.loadBackground("img/background.png");
-
-// Set the background to a panoramic image
-//skinViewer.loadPanorama("img/panorama1.png");
-
-// Change camera FOV
+// Cámara y zoom
 skinViewer.fov = 70;
-
-// Zoom out
 skinViewer.zoom = 0.5;
 
-// Rotate the player
+// Rotación y animación
 skinViewer.autoRotate = true;
-
-// Apply an animation
 skinViewer.animation = new skinview3d.WalkingAnimation();
-
-// Set the speed of the animation
 skinViewer.animation.speed = 3;
-
-// Pause the animation
-//skinViewer.animation.paused = true;
-
-// Remove the animation
-//skinViewer.animation = null;
+skinViewer.animation.paused = true;
