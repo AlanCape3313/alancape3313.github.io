@@ -8,8 +8,9 @@ import { ease, linearInterval, linearWave, lerp } from "./lib/easing.js";
 import { clamp, sigmoid } from "./lib/util.js";
 
 // === SCENE ===
-const width = 600;
-const height = 800;
+const width = 400;
+const height = 500;
+const scaleModel = 0.6;
 
 const viewScale = 1.25;
 const viewSize = new Vector2(0.75 * viewScale, 1 * viewScale);
@@ -25,9 +26,11 @@ const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(width, height);
 renderer.setClearColor(0x313233);
 document.getElementById("skin_container").appendChild(renderer.domElement);
+document.querySelector(".model-wrapper").appendChild(renderer.domElement);
 
 let controls;
 controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0,0.5,0)
 controls.enableRotate = false;
 controls.enableZoom = false;
 controls.enablePan = false;
@@ -45,7 +48,6 @@ dirLight2.position.set(0, 0, 1);
 scene.add(dirLight2);
 
 // === RENDER MODEL ===
-const scaleModel = 0.6;
 let bones; // BoneStructure
 let glideMouse = new Vector2();
 let lastGlideMouse = new Vector2();
@@ -98,6 +100,7 @@ function setupAnimations() {
             body.rotation.z = 0;
             body.rotation.y = 0;
             body.rotation.x = -0.05;
+            body.position.x = 0;
             body.position.y = 0.76;
             body.position.z = -0.05;
         })
