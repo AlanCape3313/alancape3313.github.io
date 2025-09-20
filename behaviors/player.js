@@ -4,7 +4,7 @@ import { GLTFLoader } from "https://unpkg.com/three@0.126.1/examples/jsm/loaders
 import { Vector2 } from 'https://unpkg.com/three@0.126.1/build/three.module.js';
 import { BoneStructure } from './lib/three/boneStructure.js';
 import { Animation } from './lib/animation.js';
-import { ease, linearInterval, linearWave } from "./lib/easing.js";
+import { ease, linearInterval, linearWave, lerp } from "./lib/easing.js";
 import { clamp, sigmoid } from "./lib/util.js";
 
 // === SCENE ===
@@ -37,11 +37,11 @@ controls.update();
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambientLight)
 const dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
-dirLight1.position.set(0, 1, 2);
+dirLight1.position.set(0, 1, -2);
 scene.add(dirLight1);
 
 const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.25);
-dirLight2.position.set(0, 0, -1);
+dirLight2.position.set(0, 0, 1);
 scene.add(dirLight2);
 
 // === RENDER MODEL ===
@@ -94,6 +94,13 @@ function setupAnimations() {
             waist.scale.z = 1 + q.mouseSpeed * 2.25;
             waist.scale.x = 1 + q.mouseSpeed * 2.25;
         })
+        .setBoneAnimator('body', (body, q) => {
+            body.rotation.z = 0;
+            body.rotation.y = 0;
+            body.rotation.x = -0.05;
+            body.position.y = 0.76;
+            body.position.z = -0.05;
+        })
         .setBoneAnimator('leftArm', (leftArm, q) => {
             leftArm.rotation.x = -Math.cos(q.time) * 0.05125 + -glideMouse.y * 0.1;
             leftArm.rotation.z = Math.sin(q.time) * 0.05125 - 0.06 - Math.abs(mouseVelocity.x) * 10;
@@ -124,20 +131,64 @@ function setupAnimations() {
         });
 
     const wave = new Animation('wave', bones, (q) => {
-        return { ...q }
+        mouseVelocity.subVectors(glideMouse, lastGlideMouse).clampScalar(-0.1, 0.1);
+        const mouseSpeed = clamp(mouseVelocity.length(), -0.1, 0.1);
+        lastGlideMouse.copy(glideMouse);
+        glideMouse.lerpVectors(glideMouse, mouse, 14 * clamp(q.delta, 0, 0.01));
+
+        const distanceVec = mouse.clone();
+        distanceVec.y += 0.1;
+
+        return { ...q, mouse, mouseSpeed };
     });
     wave
-        .setBoneAnimator('rightArm', (rightArm, q) => {
-            const t = q.time;
+        .setBoneAnimator('leftArm', (leftArm, q) => {
+            const t = jumpClock.getElapsedTime();
 
-            rightArm.rotation.z = -Math.cos(t * 5) * 0.5 - 0.5;
-            rightArm.rotation.y = Math.sin(t * 5) * 0.25;
+            leftArm.rotation.x = -Math.cos(q.time) * 0.05125 + -glideMouse.y * 0.1;
+            leftArm.rotation.y = -Math.sin(q.time) * 0.125 + 0.25;
+            leftArm.rotation.z = Math.sin(q.time) * 0.05125 - 0.06 - Math.abs(mouseVelocity.x) * 10 + (t < 0.33 ? lerp(0, -2, clamp(t * 3, 0, 1)) : t <= 2 ? -2.2 + Math.sin(t * 8) * 0.5 : lerp(-2.2 + Math.sin(t * 8) * 0.5, 0, clamp(t - 2, 0, 1)));
+        })
+        .setBoneAnimator('rightArm', (rightArm, q) => {
+            const t = jumpClock.getElapsedTime();
+
+            rightArm.rotation.x = Math.cos(q.time) * 0.05125 + -glideMouse.y * 0.1;
+            rightArm.rotation.y = Math.sin(q.time) * 0.125 - 0.25;
+            rightArm.rotation.z = -Math.sin(q.time) * 0.05125 + 0.06 + Math.abs(mouseVelocity.x) * 10 + (t < 0.33 ? lerp(0, 0.3, clamp(t * 3, 0, 1)) : t <= 2 ? 0.3 + Math.sin(t * 8) * 0.05 : lerp(0.3 + Math.sin(t * 8) * 0.05, 0, clamp(t - 2, 0, 1)));
+        })
+        .setBoneAnimator('body', (body, q) => {
+            const t = jumpClock.getElapsedTime();
+
+            body.rotation.z = t < 0.33 ? lerp(0, -0.2, clamp(t * 3, 0, 1)) : t <= 2 ? -0.2 + Math.cos(t * 8) * 0.05 : lerp(-0.2 + Math.cos(t * 8) * 0.05, 0, clamp(t - 2, 0, 1));
+            body.position.x = t < 0.33 ? lerp(0, 0.15, clamp(t * 3, 0, 1)) : t <= 2 ? 0.15 - Math.cos(t * 8) * 0.05 : lerp(0.15 - Math.cos(t * 8) * 0.05, 0, clamp(t - 2, 0, 1));
+            body.position.y = t < 0.33 ? lerp(0.76, 0.73, clamp(t * 3, 0, 1)) : t <= 2 ? 0.73 + Math.cos(t * 8) * 0.02 : lerp(0.73 + Math.cos(t * 8) * 0.02, 0.76, clamp(t - 2, 0, 1));
+        })
+        .setBoneAnimator('rightLeg', (rightLeg, q) => {
+            const t = jumpClock.getElapsedTime();
+
+            rightLeg.rotation.z = t < 0.33 ? lerp(0.05, 0.1, clamp(t * 3, 0, 1)) : t <= 2 ? 0.1 : lerp(0.1 - Math.cos(t * 8) * 0.01, 0.05, clamp(t - 2, 0, 1));
+        })
+        .setBoneAnimator('leftLeg', (leftLeg, q) => {
+            const t = jumpClock.getElapsedTime();
+
+            leftLeg.rotation.z = t < 0.33 ? lerp(-0.05, -0.1, clamp(t * 3, 0, 1)) : t <= 2 ? -0.1 : lerp(-0.1 - Math.cos(t * 8) * 0.01, -0.05, clamp(t - 2, 0, 1));
+        })
+        .setBoneAnimator('head', (head, q) => {
+            head.lookAt(q.mouse.x * 10, -q.mouse.y * 10, 5);
+            head.scale.set(1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5);
+        })
+        .setBoneAnimator('root', (root, q) => {
+            root.rotation.y = glideMouse.x * 0.5;
         })
         .setBoneAnimator('waist', (waist, q) => {
-            const t = q.time;
-
-            waist.rotation.y = Math.sin(t * 2) * 0.1;
-        });
+            waist.rotation.y = glideMouse.x * 0.3;
+            waist.rotation.x = -glideMouse.y * -0.05;
+            waist.position.y = -7 / 16 + Math.sin(q.time) * 0.025;
+            waist.position.z = -glideMouse.y * 0.05;
+            waist.scale.y = 1 + q.mouseSpeed * -2.25;
+            waist.scale.z = 1 + q.mouseSpeed * 2.25;
+            waist.scale.x = 1 + q.mouseSpeed * 2.25;
+        })
     const jump = new Animation('jump', bones, (q) => {
         mouseVelocity.subVectors(glideMouse, lastGlideMouse).clampScalar(-0.1, 0.1);
         const mouseSpeed = clamp(mouseVelocity.length(), -0.1, 0.1);
@@ -185,7 +236,7 @@ function setupAnimations() {
         .setBoneAnimator('rightLeg', (rightLeg, q) => {
             const t = jumpClock.getElapsedTime();
             const val = clamp(Math.sin(t * 5) * 1, 0.1, 20);
-            
+
             rightLeg.rotation.y = -0.125 + glideMouse.x * 0.1;
             rightLeg.rotation.x = -glideMouse.y * 0.05;
             rightLeg.rotation.z = 0.05 + val / 7;
@@ -198,7 +249,7 @@ function setupAnimations() {
 
             leftLeg.rotation.y = 0.125 + glideMouse.x * 0.1;
             leftLeg.rotation.x = -glideMouse.y * 0.05;
-            leftLeg.rotation.z = -0.05 -val / 7;
+            leftLeg.rotation.z = -0.05 - val / 7;
             leftLeg.position.z = -glideMouse.y * 0.05;
             leftLeg.position.y = -0.4
         })
@@ -215,8 +266,21 @@ function animate() {
 
     if (!anims) return;
 
-    if (activeAnim === 'idle') anims.idle.tick(delta);
-    else if (activeAnim === 'wave') anims.jump.tick(delta);
+    if (activeAnim === 'idle') {
+        anims.idle.tick(delta);
+
+        const waveProbability = 0.0002;
+        const random = Math.random();
+
+        if (random <= waveProbability) {
+            activeAnim = 'wave';
+            jumpClock.start();
+            setTimeout(() => {
+                activeAnim = 'idle';
+            }, 3200);
+        };
+    } else if (activeAnim === 'jump') anims.jump.tick(delta)
+    else if (activeAnim === `wave`) anims.wave.tick(delta);
 
     renderer.render(scene, camera);
 };
@@ -243,14 +307,14 @@ window.addEventListener('resize', () => {
     camera.aspect = newWidth / newHeight;
     camera.updateProjectionMatrix();
 });
-window.addEventListener('click', () => {
-    if (activeAnim === 'wave') return;
+renderer.domElement.addEventListener('click', () => {
+    if (activeAnim !== 'idle') return;
 
-    activeAnim = 'wave';
+    activeAnim = 'jump';
     jumpClock.start();
     setTimeout(() => {
         activeAnim = 'idle';
-    }, 1000);
+    }, 1100);
 });
 
 animate();
