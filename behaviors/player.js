@@ -45,6 +45,7 @@ dirLight2.position.set(0, 0, -1);
 scene.add(dirLight2);
 
 // === RENDER MODEL ===
+const scaleModel = 0.6;
 let bones; // BoneStructure
 let glideMouse = new Vector2();
 let lastGlideMouse = new Vector2();
@@ -55,6 +56,7 @@ let anims; // Animations
 
 const loader = new GLTFLoader();
 loader.load("../resources/models/player.gltf", (gltf) => {
+    gltf.scene.scale.set(scaleModel, scaleModel, scaleModel);
     scene.add(gltf.scene);
 
     bones = new BoneStructure(gltf.scene);
@@ -137,7 +139,14 @@ function setupAnimations() {
             waist.rotation.y = Math.sin(t * 2) * 0.1;
         });
     const jump = new Animation('jump', bones, (q) => {
-        return { ...q }
+        mouseVelocity.subVectors(glideMouse, lastGlideMouse).clampScalar(-0.1, 0.1);
+        const mouseSpeed = clamp(mouseVelocity.length(), -0.1, 0.1);
+        lastGlideMouse.copy(glideMouse);
+        glideMouse.lerpVectors(glideMouse, mouse, 14 * clamp(q.delta, 0, 0.01));
+
+        const distanceVec = mouse.clone();
+        distanceVec.y += 0.1;
+        return { ...q, mouse, mouseSpeed }
     });
     jump
         .setBoneAnimator('root', (root, q) => {
@@ -145,11 +154,54 @@ function setupAnimations() {
 
             const val = clamp(Math.sin(t * 5) * 1, 0, 20);
             const val2 = (t < 0.03 ? 1 + Math.pow(t / 0.33, 2) * (1.5 - 1) : t < 0.66 ? 1.5 - Math.pow((t - 0.33) / 0.33, 2) * (1.5 - 0.8) : 0.8 + Math.pow((t - 0.66) / 0.34, 2) * (1 - 0.8));
-            root.position.y = val;
+            root.position.y = val + val2 - 1;
             root.scale.y = val2;
-            //console.log(`time: ${t.toFixed(2)} pos: ${val.toFixed(2)}`)
         })
-        .setBoneAnimator('rightArm', (rightArm, q) => { })
+        .setBoneAnimator('head', (head, q) => {
+            const t = jumpClock.getElapsedTime();
+            const val = clamp(Math.sin(t * 5) * 1, 0, 20);
+
+            head.lookAt(q.mouse.x * 10, (val * 5) - q.mouse.y * 10, 5);
+            head.scale.set(1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5);
+        })
+        .setBoneAnimator('rightArm', (rightArm, q) => {
+            const t = jumpClock.getElapsedTime();
+            const val = clamp(Math.sin(t * 5) * 1, 0, 20);
+
+            rightArm.rotation.x = Math.cos(q.time) * 0.05125 + -glideMouse.y * 0.1;
+            rightArm.rotation.y = Math.sin(q.time) * 0.125 - 0.25;
+            rightArm.rotation.z = -Math.sin(q.time) * 0.05125 + 0.06 + Math.abs(mouseVelocity.x) * 10 + val / 2;
+            rightArm.position.y = t >= 0.61 ? clamp(Math.sin((t) * 6.5) * 0.20, -20, -0.15) : -0.15
+        })
+        .setBoneAnimator('leftArm', (leftArm, q) => {
+            const t = jumpClock.getElapsedTime();
+            const val = clamp(Math.sin(t * 5) * 1, 0, 20);
+
+            leftArm.rotation.x = -Math.cos(q.time) * 0.05125 + -glideMouse.y * 0.1;
+            leftArm.rotation.y = -Math.sin(q.time) * 0.125 + 0.25;
+            leftArm.rotation.z = Math.sin(q.time) * 0.05125 - 0.06 - Math.abs(mouseVelocity.x) * 10 - val / 2;
+            leftArm.position.y = t >= 0.61 ? clamp(Math.sin((t) * 6.5) * 0.20, -20, -0.15) : -0.15
+        })
+        .setBoneAnimator('rightLeg', (rightLeg, q) => {
+            const t = jumpClock.getElapsedTime();
+            const val = clamp(Math.sin(t * 5) * 1, 0.1, 20);
+            
+            rightLeg.rotation.y = -0.125 + glideMouse.x * 0.1;
+            rightLeg.rotation.x = -glideMouse.y * 0.05;
+            rightLeg.rotation.z = 0.05 + val / 7;
+            rightLeg.position.z = -glideMouse.y * 0.05;
+            rightLeg.position.y = -0.4
+        })
+        .setBoneAnimator('leftLeg', (leftLeg, q) => {
+            const t = jumpClock.getElapsedTime();
+            const val = clamp(Math.sin(t * 5) * 1, 0.1, 20);
+
+            leftLeg.rotation.y = 0.125 + glideMouse.x * 0.1;
+            leftLeg.rotation.x = -glideMouse.y * 0.05;
+            leftLeg.rotation.z = -0.05 -val / 7;
+            leftLeg.position.z = -glideMouse.y * 0.05;
+            leftLeg.position.y = -0.4
+        })
 
     return { idle, wave, jump };
 };
