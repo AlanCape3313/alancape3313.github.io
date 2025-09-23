@@ -1,0 +1,11 @@
+.project {
+    width: 96.5%;
+    margin: 0 1%;
+}
+.project-content .minecraft-inset-box {
+    	box-shadow:
+		0 0 0 4px var(--minecraft-border-color);
+}
+.icon {
+    width: 10%;
+}
