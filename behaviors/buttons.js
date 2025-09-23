@@ -1,5 +1,5 @@
-import {initCarousel} from '../behaviors/carousel.js';
-import { initPanorama } from '../behaviors/panorama.js';
+import {initCarousel} from './carousel.js';
+import { initPanorama } from './panorama.js';
 
 const buttons = document.querySelectorAll('.page-button');
 const panelContainer = document.getElementById('page-container');
@@ -53,6 +53,7 @@ function loadRoute(routeName) {
 //Load by default
 if (buttons.length > 0) {
     const firstButton = buttons[0];
+    console.log(firstButton.textContent.trim())
     loadRoute(firstButton.textContent.trim());
     setActiveButton(firstButton);
 }
