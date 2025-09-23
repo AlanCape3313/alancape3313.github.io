@@ -24,9 +24,10 @@ camera.rotation.set(0.1, Math.PI, 0);
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(width, height);
-renderer.setClearColor(0x313233);
-document.getElementById("skin_container").appendChild(renderer.domElement);
-document.querySelector(".model-wrapper").appendChild(renderer.domElement);
+renderer.setClearColor(0x000000, 0);
+
+const mountPoint = document.querySelector('.model-wrapper');
+mountPoint.appendChild(renderer.domElement);
 
 let controls;
 controls = new OrbitControls(camera, renderer.domElement);
@@ -296,7 +297,7 @@ window.addEventListener("mousemove", (e) => {
     mouse.clampScalar(-2, 2);
 });
 window.addEventListener('resize', () => {
-    const container = document.getElementById('skin_container');
+    const container = mountPoint
 
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;

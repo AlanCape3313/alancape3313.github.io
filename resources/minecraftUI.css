@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'MinecraftFull';
-	src: url('/font/MinecraftFull-1.20.ttf') format('truetype');
+	src: url('./font/MinecraftFull-1.20.ttf') format('truetype');
 }
 
 * {
