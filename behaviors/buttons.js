@@ -10,12 +10,14 @@ buttons.forEach(button => {
 });
 
 function setActiveButton(button) {
-    buttons.forEach(b => b.disabled = false); // desbloquea todos
-    button.disabled = true; // desactiva el presionado
-}
+    buttons.forEach(b => b.disabled = false);
+    button.disabled = true;
+};
+
+let currentRouteCSS;
 function loadRoute(routeName) {
     //Load html of each page
-    fetch(`resources/routes/${routeName}/index.html`)
+    fetch(`resources/routes/${routeName}/page.html`)
         .then(response => {
             if (!response.ok) throw new Error('No se pudo cargar la ruta');
             return response.text();
@@ -23,11 +25,16 @@ function loadRoute(routeName) {
         .then(html => {
             panelContainer.innerHTML = html;
 
-            // Load .css of each page
+            //Loads and Remove each CSS
+            if (currentRouteCSS) {
+                currentRouteCSS.remove();
+            }
+
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = `routes/${routeName}/style.css`;
+            link.href = `resources/routes/${routeName}/stylePage.css`;
             document.head.appendChild(link);
+            currentRouteCSS = link;
         })
         .catch(err => {
             console.error(err);

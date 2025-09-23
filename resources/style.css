@@ -120,33 +120,3 @@
     justify-content: center;
     align-items: center;
 }
-
-nav a {
-    color: white;
-    margin: 0 1rem;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-.galery {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 20px;
-}
-
-.galery img {
-    width: 200px;
-    border: 2px solid white;
-    border-radius: 5px;
-    transition: transform 0.2s;
-}
-
-.galery img:hover {
-    transform: scale(1.05);
-}
