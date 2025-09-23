@@ -10,7 +10,7 @@ import { clamp, sigmoid } from "./lib/util.js";
 // === SCENE ===
 const width = 400;
 const height = 500;
-const scaleModel = 0.6;
+const scaleModel = 0.8;
 
 const viewScale = 1.25;
 const viewSize = new Vector2(0.75 * viewScale, 1 * viewScale);
@@ -24,14 +24,14 @@ camera.rotation.set(0.1, Math.PI, 0);
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(width, height);
-renderer.setClearColor(0x000000, 0);
+//renderer.setClearColor(0x000000, 0); background, I dont need here atm, its controlled by style.css
 
 const mountPoint = document.querySelector('.model-wrapper');
 mountPoint.appendChild(renderer.domElement);
 
 let controls;
 controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0,0.5,0)
+controls.target.set(0, 0.3, 0)
 controls.enableRotate = false;
 controls.enableZoom = false;
 controls.enablePan = false;
@@ -58,11 +58,17 @@ let mouse = new Vector2();
 let anims; // Animations
 
 const loader = new GLTFLoader();
+let nameTagSprite;
 loader.load("../resources/models/player.gltf", (gltf) => {
     gltf.scene.scale.set(scaleModel, scaleModel, scaleModel);
     scene.add(gltf.scene);
 
     bones = new BoneStructure(gltf.scene);
+
+    document.fonts.load('28px MinecraftFull').then(() => {
+        nameTagSprite = createNameTag("AlanCape");
+        gltf.scene.add(nameTagSprite);
+    });
 
     anims = setupAnimations();
 });
@@ -70,6 +76,41 @@ loader.load("../resources/models/player.gltf", (gltf) => {
 const clock = new THREE.Clock();
 const jumpClock = new THREE.Clock(false);
 
+function createNameTag(text) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    ctx.font = '28px MinecraftFull, monospace';
+
+    const metrics = ctx.measureText(text);
+    const textWidth = metrics.width;
+    const textHeight = 28;
+
+    const padding = 10;
+    canvas.width = textWidth + padding * 2;
+    canvas.height = textHeight + padding * 2;
+
+    ctx.font = '28px MinecraftFull, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+
+    const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+    const sprite = new THREE.Sprite(material);
+
+    sprite.scale.set(canvas.width / 150, canvas.height / 150, 1);
+    sprite.position.set(0, 2.5, 0);
+
+    return sprite;
+}
 function setupAnimations() {
     // === ANIMATIONS ===
     const idle = new Animation('idle', bones, (q) => {
@@ -263,7 +304,6 @@ function setupAnimations() {
 
 // === START ===
 let activeAnim = 'idle';
-
 function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
@@ -285,6 +325,18 @@ function animate() {
         };
     } else if (activeAnim === 'jump') anims.jump.tick(delta)
     else if (activeAnim === `wave`) anims.wave.tick(delta);
+
+    if (nameTagSprite) {
+        nameTagSprite.quaternion.copy(camera.quaternion); //Look at the camera
+
+        const rootBone = bones?.getBone('root');
+        if (rootBone) {
+            const rootWorldPos = new THREE.Vector3();
+            rootBone.getWorldPosition(rootWorldPos);
+            nameTagSprite.position.copy(rootWorldPos);
+            nameTagSprite.position.y += 1.3; // offset above the head
+        };
+    };
 
     renderer.render(scene, camera);
 };

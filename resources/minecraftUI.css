@@ -48,6 +48,7 @@ p {
 	line-height: 1.4em;
 	font-size: 20px;
 	max-width: 800px;
+	text-align: left;
 }
 
 a {
@@ -119,6 +120,7 @@ h3,
 h4,
 h5,
 h6 {
+	display: flex;
 	font-weight: normal;
 	filter: drop-shadow(4px 4px 0px #00000066);
 }
