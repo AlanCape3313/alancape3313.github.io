@@ -6,7 +6,7 @@ const panelContainer = document.getElementById('page-container');
 
 buttons.forEach(button => {
     button.addEventListener('click', () => {
-        const routeName = button.textContent.trim().toLowerCase();
+        const routeName = button.textContent.trim()
         loadRoute(routeName);       // carga el HTML y CSS
         setActiveButton(button);    // marca el botón como presionado
     });
