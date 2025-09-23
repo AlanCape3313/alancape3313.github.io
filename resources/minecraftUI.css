@@ -63,7 +63,6 @@ button {
 	font-size: 20px;
 	color: var(--minecraft-text-color);
 	background-color: var(--minecraft-button-color);
-	/* prettier-ignore */
 	box-shadow:
 		0 -12px 0 0 #58585a inset,
 		0 -16px 0 0 var(--minecraft-button-inset-border-color) inset,
@@ -78,35 +77,37 @@ button {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	transition: box-shadow 0.2s ease, padding 0.2s ease, margin-top 0.2s ease;
 }
 button:hover {
 	background-color: var(--minecraft-button-hover-color);
 }
 button:active {
-	/* prettier-ignore */
 	box-shadow:
 		0 0 0 4px #ecedee inset,
 		0 0 0 4px #1e1e1f;
 	padding: calc(4px + 8px) calc(1px + 8px) calc(8px + 4px) calc(4px + 8px);
-	/* border-top: 12px solid #00000000; */
 	margin-top: 12px;
 }
 button:disabled {
 	color: var(--minecraft-text-secondary-color);
 	background-color: #3c8527;
-	/* prettier-ignore */
 	box-shadow:
 		0 0 0 4px #639d52 inset,
 		0 0 0 4px #1e1e1f;
 	padding: calc(4px + 8px) calc(1px + 8px) calc(8px + 4px) calc(4px + 8px);
 	margin-top: 12px;
 }
+button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 4px;
+    background-color: #ecedee;
+    transition: width 0.3s ease;
+}
 button:disabled::after {
-	content: '';
-	border-bottom: 4px solid #ecedee;
-	font-size: 40px;
-	position: absolute;
-	bottom: 0;
 	width: 38%;
 }
 
@@ -128,7 +129,6 @@ h6 {
 .minecraft-box {
 	outline: 4px solid var(--minecraft-border-color);
 	background-color: var(--minecraft-foreground-color);
-	/* prettier-ignore */
 	box-shadow:
 		0 4px 0 0 var(--minecraft-border-top-color) inset,
 		0 -4px 0 0 var(--minecraft-border-bottom-color) inset;
@@ -137,7 +137,6 @@ h6 {
 .minecraft-title-box {
 	color: var(--minecraft-text-color);
 	background-color: #e6e8eb;
-	/* prettier-ignore */
 	box-shadow:
 		0 -12px 0 0 #b1b2b5 inset,
 		0 0 0 4px var(--minecraft-border-color);
@@ -152,7 +151,6 @@ h6 {
 
 .minecraft-inset-box {
 	background-color: var(--minecraft-background-color);
-	/* prettier-ignore */
 	box-shadow:
 		0 12px 0 0 #242425 inset,
 		/* 0 -16px 0 0 var(--minecraft-button-inset-border-color) inset,
