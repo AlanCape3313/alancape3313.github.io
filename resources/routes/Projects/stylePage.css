@@ -1,11 +1,132 @@
+.project-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+    margin-right: 16px;
+    width: 98%;
+}
+
 .project {
-    width: 96.5%;
-    margin: 0 1%;
+    background-color: var(--minecraft-background-color);
+    width: 96.1%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 16px;
+    margin: -0px 16px;
+}
+
+.project-content .title {
+    z-index: 1;
+}
+
+.project-content img {
+    margin-right: 32px;
+    margin-left: 8px;
+}
+
+.project-content p {
+    align-self: center;
+    margin-bottom: 5%;
+}
+
+.project-content h2 {
+    color: var(--minecraft-text-color);
+    filter: drop-shadow(0px 0px 0px #00000066);
 }
 .project-content .minecraft-inset-box {
-    	box-shadow:
-		0 0 0 4px var(--minecraft-border-color);
+    width: 96.9%;
+    margin-left: 1%;
 }
+
 .icon {
     width: 10%;
+    margin-bottom: 1%;
+}
+
+.minecraft-title-box {
+    width: 97%;
+    font-size: 1.5rem;
+    margin: 0px 0px;
+}
+
+.galleries {
+    background-color: var(--minecraft-background-color);
+    width: 98%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 1%;
+    z-index: 0;
+}
+
+.carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 16px;
+    padding: 2%;
+}
+
+.carousel-navigation.minecraft-inset-box {
+    width: 100%;
+    height: 100%;
+    transform: scaleY(1.2);
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-slide img,
+.carousel-slide iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.carousel-indicators {
+    display: flex;
+}
+
+.carousel-btn.prev {
+    left: 14px;
+}
+
+.carousel-btn.next {
+    right: 14px;
+}
+.panorama-container {
+  width: 100%;          /* ancho del panel */
+  height: 450px;        /* alto del panorama */
+  overflow: hidden;     /* recorta los bordes */
+  cursor: grab;
+  position: relative;
+}
+
+.panorama {
+  display: block;
+  height: 100%;
+  width: auto;          /* mantiene proporción */
+  user-select: none;
+  pointer-events: none;
 }

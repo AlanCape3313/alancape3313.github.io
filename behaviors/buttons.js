@@ -1,3 +1,6 @@
+import {initCarousel} from './carousel.js';
+import { initPanorama } from './panorama.js';
+
 const buttons = document.querySelectorAll('.page-button');
 const panelContainer = document.getElementById('page-container');
 
@@ -35,6 +38,11 @@ function loadRoute(routeName) {
             link.href = `resources/routes/${routeName}/stylePage.css`;
             document.head.appendChild(link);
             currentRouteCSS = link;
+
+            if (routeName === `projects`) {
+                initCarousel()
+                initPanorama()
+            }
         })
         .catch(err => {
             console.error(err);

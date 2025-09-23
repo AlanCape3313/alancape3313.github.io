@@ -1,38 +1,45 @@
 @media screen and (max-width: 800px) {
-		.page-content {
-			margin-left: 5vw !important;
-			margin-right: 5vw !important;
-		}
-		.page-buttons {
-			flex-direction: column;
-			gap: 16px;
-		}
-		.page-button {
-			height: 10vw !important;
-			font-size: 5vw !important;
-		}
-		.title {
-			flex-direction: column !important;
-			align-items: center !important;
-			width: 90% !important;
-			margin-top: 16px !important;
-			margin-left: 5vw !important;
-			margin-right: 5vw !important;
-		}
-		.title div:not(.description) {
-			margin: 0 !important;
-			margin-top: 16px !important;
-		}
-		.description {
-			width: 90% !important;
-		}
-		.description p {
-			font-size: 14px !important;
-		}
-		.player-container {
-			align-self: center !important;
-		}
-	}
+    .page-content {
+        margin-left: 5vw !important;
+        margin-right: 5vw !important;
+    }
+
+    .page-buttons {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .page-button {
+        height: 10vw !important;
+        font-size: 5vw !important;
+    }
+
+    .title {
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 90% !important;
+        margin-top: 16px !important;
+        margin-left: 5vw !important;
+        margin-right: 5vw !important;
+    }
+
+    .title div:not(.description) {
+        margin: 0 !important;
+        margin-top: 16px !important;
+    }
+
+    .description {
+        width: 90% !important;
+    }
+
+    .description p {
+        font-size: 14px !important;
+    }
+
+    .player-container {
+        align-self: center !important;
+    }
+}
 
 .background {
     position: fixed;
