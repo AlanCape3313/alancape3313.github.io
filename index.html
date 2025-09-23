@@ -20,83 +20,83 @@
     <link rel="stylesheet" href="resources/style.css">
 </head>
 
-<body>
-    <div class="background"></div>
-    <div class="site-container">
-        <div class="title minecraft-box">
-            <div class="model-wrapper minecraft-inset-box">
-                <div id="skin_container"></div>
-            </div>
-            <div class="description">
-                <h1>Hello and Welcome!</h1>
-                <h1>I'm Alan</h1>
-                <p>
-                    I am a <span id="age"></span> years-old technical Minecraft Bedrock content developer,
-                    I am an experimented Addon Maker, technical animator and particle developer on the game
-                </p>
-                <p>
-                    I have been playing Minecraft since 0.10.5 version, it came out in 2015, <span
-                        id="ageVersion"></span> years ago
-                    and have been creating Maps and Addons since 2018 and working on the Marketplace since 2019.
-                </p>
-                <p>I am always passionate about the content I create and I love creating things never done before in the
-                    game.</p>
-            </div>
+<div class="background"></div>
+<div class="site-container">
+    <div class="title minecraft-box">
+        <div class="model-wrapper minecraft-inset-box">
+            <div id="skin_container"></div>
+        </div>
+        <div class="description">
+            <h1>Hello and Welcome!</h1>
+            <h1>I'm Alan</h1>
+            <p>
+                I am a <span id="age"></span> years-old technical Minecraft Bedrock content developer,
+                I am an experimented Addon Maker, technical animator and particle developer on the game
+            </p>
+            <p>
+                I have been playing Minecraft since 0.10.5 version, it came out in 2015, <span id="ageVersion"></span>
+                years ago
+                and have been creating Maps and Addons since 2018 and working on the Marketplace since 2019.
+            </p>
+            <p>I am always passionate about the content I create and I love creating things never done before in the
+                game.</p>
         </div>
     </div>
-    <script>
-        const birth = new Date(2003, 5, 20);
-        const now = new Date();
-        let age = now.getFullYear() - birth.getFullYear();
+</div>
+<div class="page-content minecraft-box">
+    <div class="page-buttons">
+        <button class="page-button">
+            Portfolio
+        </button>
+        <button class = "page-button">
+            Projects
+        </button>
+        <button class="page-button">
+            About Me
+        </button>
+        <button class="page-button">
+            Contact
+        </button>
+    </div>
+</div>
+<script>
+    const birth = new Date(2003, 5, 20);
+    const now = new Date();
+    let age = now.getFullYear() - birth.getFullYear();
 
-        const actualMonth = now.getMonth();
-        const actualDay = now.getDate();
+    const actualMonth = now.getMonth();
+    const actualDay = now.getDate();
 
-        if (actualMonth < birth.getMonth() ||
-            (actualMonth === birth.getMonth() && actualDay < birth.getDate())) {
-            age--;
-        };
+    if (actualMonth < birth.getMonth() ||
+        (actualMonth === birth.getMonth() && actualDay < birth.getDate())) {
+        age--;
+    };
 
-        const versionRelease = 2015;
-        const ageVersion = now.getFullYear() - versionRelease;
+    const versionRelease = 2015;
+    const ageVersion = now.getFullYear() - versionRelease;
 
-        document.getElementById("age").textContent = age;
-        document.getElementById("ageVersion").textContent = ageVersion;
-    </script>
-    <script type="module" src="/behaviors/main.js"></script>
-    <header>
-        <h1>¡Hey there! I'm AlanCape123</h1>
-        <nav>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#proyects">Proyects</a>
-            <a href="#about">About me</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+    document.getElementById("age").textContent = age;
+    document.getElementById("ageVersion").textContent = ageVersion;
+</script>
+<script type="module" src="/behaviors/main.js"></script>
 
-    <section id="about">
-        <h2>About me</h2>
-        <p>Soy un creador de datapacks, animaciones y herramientas para Minecraft.</p>
-    </section>
+<section id="portfolio">
+    <h2>My Portfolio</h2>
+    <div class="galery">
+        <img src="resources/textures/projects/project1.png" alt="Project 1">
+        <img src="resources/textures/projects/project2.png" alt="Project 2">
+        <img src="resources/textures/projects/project3.png" alt="Project 3">
+    </div>
+</section>
 
-    <section id="portfolio">
-        <h2>My Portfolio</h2>
-        <div class="galery">
-            <img src="resources/textures/projects/project1.png" alt="Project 1">
-            <img src="resources/textures/projects/project2.png" alt="Project 2">
-            <img src="resources/textures/projects/project3.png" alt="Project 3">
-        </div>
-    </section>
+<section id="contact">
+    <h2>Contact</h2>
+    <p>Mail: <a href="mailto:alanezequielcapellino2003@gmail.com">alanezequielcapellino2003@gmail.com</a></p>
+    <p>Discord: <a href="https://discord.com/users/394429614526693376">AlanCape</a></p>
+</section>
 
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Mail: <a href="mailto:alanezequielcapellino2003@gmail.com">alanezequielcapellino2003@gmail.com</a></p>
-        <p>Discord: <a href="https://discord.com/users/394429614526693376">AlanCape</a></p>
-    </section>
-
-    <footer>
-        <p>© 2025 AlanCape</p>
-    </footer>
-</body>
+<footer>
+    <p>© 2025 AlanCape</p>
+</footer>
 
 </html>
