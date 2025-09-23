@@ -20,7 +20,7 @@ function setActiveButton(button) {
 let currentRouteCSS;
 function loadRoute(routeName) {
     //Load html of each page
-    fetch(`resources/routes/${routeName}/page.html`)
+    fetch(`/resources/routes/${routeName}/page.html`)
         .then(response => {
             if (!response.ok) throw new Error('No se pudo cargar la ruta');
             return response.text();
@@ -35,7 +35,7 @@ function loadRoute(routeName) {
 
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = `resources/routes/${routeName}/stylePage.css`;
+            link.href = `/resources/routes/${routeName}/stylePage.css`;
             document.head.appendChild(link);
             currentRouteCSS = link;
 
