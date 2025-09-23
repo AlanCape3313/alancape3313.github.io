@@ -1,26 +1,38 @@
 @media screen and (max-width: 800px) {
-    .title {
-        flex-direction: column !important;
-        align-items: center !important;
-        width: 90% !important;
-        margin-top: 16px !important;
-        margin-left: 5vw !important;
-        margin-right: 5vw !important;
-    }
-
-    .title div:not(.description) {
-        margin: 0 !important;
-        margin-top: 16px !important;
-    }
-
-    .description {
-        width: 90% !important;
-    }
-
-    .description p {
-        font-size: 14px !important;
-    }
-}
+		.page-content {
+			margin-left: 5vw !important;
+			margin-right: 5vw !important;
+		}
+		.page-buttons {
+			flex-direction: column;
+			gap: 16px;
+		}
+		.page-button {
+			height: 10vw !important;
+			font-size: 5vw !important;
+		}
+		.title {
+			flex-direction: column !important;
+			align-items: center !important;
+			width: 90% !important;
+			margin-top: 16px !important;
+			margin-left: 5vw !important;
+			margin-right: 5vw !important;
+		}
+		.title div:not(.description) {
+			margin: 0 !important;
+			margin-top: 16px !important;
+		}
+		.description {
+			width: 90% !important;
+		}
+		.description p {
+			font-size: 14px !important;
+		}
+		.player-container {
+			align-self: center !important;
+		}
+	}
 
 .background {
     position: fixed;
@@ -52,7 +64,6 @@
     flex-direction: row;
     align-items: stretch;
     justify-content: center;
-    color: var(--color-text-secondary);
     align-self: center;
     margin-bottom: 32px;
 }
@@ -94,7 +105,6 @@
 .page-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding-top: 20px;
     padding-bottom: 32px;
     margin-bottom: 64px;
