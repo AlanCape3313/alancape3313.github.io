@@ -1,4 +1,5 @@
 export function initCarousel() {
+    console.log(`adwas`)
     const carousels = document.querySelectorAll('.carousel');
 
     carousels.forEach(carousel => {
