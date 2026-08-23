@@ -1,6 +1,23 @@
 (() => {
   const buttons = Array.from(document.querySelectorAll(".page-button"));
   const panelContainer = document.getElementById("page-container");
+  const clickSounds = Array.from({ length: 4 }, () => {
+    const sound = new Audio("./resources/audio/random-click.ogg");
+    sound.preload = "auto";
+    sound.volume = .32;
+    return sound;
+  });
+  let nextClickSound = 0;
+
+  document.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button || button.disabled) return;
+
+    const sound = clickSounds[nextClickSound];
+    nextClickSound = (nextClickSound + 1) % clickSounds.length;
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  });
 
   function initCarousel() {
     document.querySelectorAll(".carousel").forEach(carousel => {
