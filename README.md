@@ -1,10 +1,23 @@
-# AlanCape3313.github.io — v3
+# Minecraft Portfolio
 
-Cambios de esta versión:
-- Three.js local en `node_modules/three`, usando una única instancia (0.180.0) para `player.js`, `GLTFLoader`, `OrbitControls` y las librerías del modelo.
-- Restaurada la implementación original de `player.js` que cargaba `resources/models/player.gltf`.
-- Navegación de pestañas embebida en `index.html`, sin `fetch()`, para que el sitio no dependa de CORS al abrirlo localmente.
-- Diseño más horizontal y aprovechamiento de ancho (hasta 1540px / 96vw).
-- Botones con las proporciones y efectos del estilo Minecraft original.
-- Fondo morado oscuro con cuadrícula y partículas geométricas.
-- YouTube con URLs de embed limpias. En GitHub Pages se muestran los iframes; al abrir `index.html` con `file://`, se muestra un enlace directo a YouTube en lugar del Error 153 que YouTube produce al no recibir un Referer HTTP.
+Portfolio web interactivo inspirado en la estética de Minecraft, diseñado y desarrollado para presentar mis proyectos, habilidades y experiencia de una manera original.
+
+## Características
+
+- Modelo 3D animado con Three.js.
+- Interacción con cursor, clic y controles táctiles.
+- Fondo dinámico con partículas y efectos de movimiento.
+- Partículas reactivas al cursor.
+- Galería de proyectos con vista en pantalla completa.
+- Efectos de sonido inspirados en Minecraft.
+- Diseño responsive para computadoras y dispositivos móviles.
+- Animaciones y transiciones personalizadas.
+
+## Tecnologías utilizadas
+
+- HTML5
+- CSS3
+- JavaScript
+- Three.js
+- Modelos 3D en formato GLTF/GLB
+- Canvas API
