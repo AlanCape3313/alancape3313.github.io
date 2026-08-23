@@ -88,24 +88,29 @@
 
     const image = document.getElementById("lightbox-image");
     const caption = document.getElementById("lightbox-caption");
+    const closeButton = lightbox.querySelector(".lightbox-close");
+    let previousFocus = null;
     const close = () => {
       lightbox.classList.remove("open");
       lightbox.setAttribute("aria-hidden", "true");
-      image.src = "";
+      image.removeAttribute("src");
       document.body.style.overflow = "";
+      previousFocus?.focus();
     };
 
-    lightbox.querySelectorAll(".lightbox-trigger").forEach(trigger => {
-      trigger.addEventListener("click", () => {
-        image.src = trigger.dataset.image;
-        image.alt = trigger.dataset.title || "";
-        caption.textContent = trigger.dataset.title || "";
-        lightbox.classList.add("open");
-        lightbox.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
-      });
+    panelContainer.addEventListener("click", event => {
+      const trigger = event.target.closest(".lightbox-trigger");
+      if (!trigger || !panelContainer.contains(trigger)) return;
+      previousFocus = trigger;
+      image.src = trigger.dataset.image;
+      image.alt = trigger.dataset.title || "";
+      caption.textContent = trigger.dataset.title || "";
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeButton?.focus();
     });
-    lightbox.querySelector(".lightbox-close")?.addEventListener("click", close);
+    closeButton?.addEventListener("click", close);
     lightbox.addEventListener("click", e => { if (e.target === lightbox) close(); });
     document.addEventListener("keydown", e => {
       if (e.key === "Escape" && lightbox.classList.contains("open")) close();

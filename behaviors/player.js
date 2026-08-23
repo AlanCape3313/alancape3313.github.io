@@ -342,7 +342,7 @@ function animate() {
 };
 
 // === EVENTS ===
-window.addEventListener("mousemove", (e) => {
+const updateModelPointer = (e) => {
     const rect = renderer.domElement.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
 
@@ -356,7 +356,13 @@ window.addEventListener("mousemove", (e) => {
         clamp(x, -1.15, 1.15),
         clamp(y, -1.05, 1.05)
     );
-});
+};
+
+window.addEventListener("pointermove", updateModelPointer, { passive: true });
+renderer.domElement.addEventListener("pointerdown", (e) => {
+    updateModelPointer(e);
+    renderer.domElement.setPointerCapture?.(e.pointerId);
+}, { passive: true });
 window.addEventListener('resize', () => {
     const container = mountPoint
 
@@ -372,7 +378,7 @@ window.addEventListener('resize', () => {
     camera.aspect = newWidth / newHeight;
     camera.updateProjectionMatrix();
 });
-renderer.domElement.addEventListener('click', () => {
+renderer.domElement.addEventListener('pointerup', () => {
     if (activeAnim !== 'idle') return;
 
     activeAnim = 'jump';
