@@ -1,4 +1,4 @@
-import { Group, Mesh, MeshStandardMaterial, Object3D } from 'https://unpkg.com/three@0.126.1/build/three.module.js';
+import { Group, Mesh, MeshStandardMaterial, Object3D } from 'three';
 
 export class BoneStructure {
 	constructor(scene) {

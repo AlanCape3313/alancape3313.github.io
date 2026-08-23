@@ -1,4 +1,4 @@
-import { Clock, Object3D } from 'https://unpkg.com/three@0.126.1/build/three.module.js';
+import { Clock, Object3D } from 'three';
 
 const CLOCK = new Clock();
 

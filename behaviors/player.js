@@ -1,7 +1,7 @@
-import * as THREE from 'https://unpkg.com/three@0.126.1/build/three.module.js';
-import { OrbitControls } from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from "https://unpkg.com/three@0.126.1/examples/jsm/loaders/GLTFLoader.js";
-import { Vector2 } from 'https://unpkg.com/three@0.126.1/build/three.module.js';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { Vector2 } from 'three';
 import { BoneStructure } from './lib/three/boneStructure.js';
 import { Animation } from './lib/animation.js';
 import { ease, linearInterval, linearWave, lerp } from "./lib/easing.js";

@@ -1,91 +1,619 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="https://alancape3313.github.io/resources/textures/favicon.png" type="image/png">
-    <meta name="viewport" content="width=device-width">
-    <meta name="theme-color" content="#00ACED">
-    <meta name="description" content="Welcome to AlanCape's Portfolio!">
-
-    <!--Shared link-->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="AlanCape3313.github.io">
-    <meta property="og:description" content="Welcome to AlanCape's Portfolio!">
-    <meta property="og:url" content="https://alancape3313.github.io/">
-    <meta property="og:image" content="https://alancape3313.github.io/resources/textures/favicon.png">
-
-    <title>AlanCape3313.github.io</title>
-    <link rel="stylesheet" href="resources/minecraftUI.css">
-    <link rel="stylesheet" href="resources/style.css">
-</head>
-
-<div class="background"></div>
-<div class="site-container">
-    <div class="title minecraft-box">
-        <div class="model-wrapper minecraft-inset-box">
-            <div id="skin_container"></div>
-        </div>
-        <div class="description">
-            <h1>Hello and Welcome!</h1>
-            <h1>I'm Alan</h1>
-            <p>
-                I am a <span id="age"></span> years-old technical Minecraft Bedrock content developer,
-                I am an experimented Addon Maker, technical animator and particle developer on the game
-            </p>
-            <p>
-                I have been playing Minecraft since 0.10.5 version, it came out in 2015, <span id="ageVersion"></span>
-                years ago
-                and have been creating Maps and Addons since 2018 and working on the Marketplace since 2019.
-            </p>
-            <p>I am always passionate about the content I create and I love creating things never done before in the
-                game.</p>
-        </div>
-    </div>
-</div>
-<div class="page-content minecraft-box">
-    <div class="page-buttons">
-        <button class="page-button">
-            Portfolio
-        </button>
-        <button class = "page-button">
-            Projects
-        </button>
-        <button class="page-button">
-            About Me
-        </button>
-        <button class="page-button">
-            Contact
-        </button>
-    </div>
-    <hr>
-    <slot>
-            <div id="page-container"></div>
-    </slot>
-</div>
-<script>
-    const birth = new Date(2003, 5, 20);
-    const now = new Date();
-    let age = now.getFullYear() - birth.getFullYear();
-
-    const actualMonth = now.getMonth();
-    const actualDay = now.getDate();
-
-    if (actualMonth < birth.getMonth() ||
-        (actualMonth === birth.getMonth() && actualDay < birth.getDate())) {
-        age--;
-    };
-
-    const versionRelease = 2015;
-    const ageVersion = now.getFullYear() - versionRelease;
-
-    document.getElementById("age").textContent = age;
-    document.getElementById("ageVersion").textContent = ageVersion;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#24152f">
+<meta name="description" content="AlanCape's Minecraft Bedrock development portfolio. Addons, entities, animation, particles, UI and world development.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AlanCape — Minecraft Bedrock Developer">
+<meta property="og:description" content="Minecraft Bedrock addon development, animation, particles, UI and boss encounters.">
+<meta property="og:url" content="https://alancape3313.github.io/">
+<meta property="og:image" content="resources/textures/favicon.png">
+<link rel="icon" href="resources/textures/favicon.png" type="image/png">
+<title>AlanCape — Minecraft Bedrock Developer</title>
+<link rel="stylesheet" href="resources/minecraftUI.css">
+<link rel="stylesheet" href="resources/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./node_modules/three/build/three.module.js",
+    "three/addons/": "./node_modules/three/examples/jsm/"
+  }
+}
 </script>
-<script type="module" src="/behaviors/main.js"></script>
 
-<footer>
-    <p>© 2025 AlanCape</p>
-</footer>
+<style>
+.portfolio-page{display:flex;flex-direction:column;gap:clamp(1rem,2vw,1.5rem)}
+.portfolio-heading{font-size:clamp(1.1rem,2vw,1.5rem);margin:0}
+.portfolio-intro{display:grid;grid-template-columns:1fr minmax(240px,340px);gap:clamp(1rem,3vw,2.5rem);align-items:center}
+.portfolio-intro h2{max-width:760px}
+.eyebrow,.portfolio-tag{font-size:.7rem;letter-spacing:.12em;color:#7ac95e;margin:0 0 .45rem}
+.portfolio-stats{display:grid;grid-template-columns:1fr;gap:8px}
+.portfolio-stats div{padding:.8rem 1rem;background:#3a2b45;border:2px solid #17121d;box-shadow:2px 2px 0 #6b536f inset}
+.portfolio-stats strong{display:block;font-size:1.35rem;color:#fff}
+.portfolio-stats span{display:block;color:#aeb1b4;font-size:.7rem;margin-top:.25rem}
+.portfolio-section-title{display:flex;align-items:end;justify-content:space-between;gap:1rem;border-bottom:4px solid #17121d;padding:.2rem .2rem .7rem}
+.portfolio-section-title h2,.portfolio-section-title p{margin:0}
+.portfolio-section-title p{font-size:.75rem}
+.portfolio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1rem,2vw,1.5rem)}
+.portfolio-card{overflow:hidden;display:flex;flex-direction:column;background:#34263e}
+.portfolio-image-button{display:block;width:100%;padding:0;border:0;background:#17121d;overflow:hidden;aspect-ratio:16/9}
+.portfolio-image-button img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease,filter .25s ease}
+.portfolio-image-button:hover img{transform:scale(1.04);filter:brightness(1.12)}
+.portfolio-card-body{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;flex:1}
+.portfolio-card-body p{font-size:.8rem;flex:1}
+.portfolio-card-body a{font-size:.8rem}
+.portfolio-cta{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.portfolio-cta h2{margin-bottom:.4rem}
+.portfolio-cta p{margin:0}
+.portfolio-cta-buttons{display:flex;gap:10px}
+.portfolio-cta-buttons button{font-size:.8rem}
 
+.lightbox{position:fixed;inset:0;background:rgba(5,7,5,.9);z-index:50;display:none;align-items:center;justify-content:center;padding:clamp(1rem,4vw,3rem)}
+.lightbox.open{display:flex}
+.lightbox figure{margin:0;max-width:min(1100px,96vw);max-height:92vh;text-align:center}
+.lightbox img{max-width:100%;max-height:82vh;object-fit:contain;outline:4px solid #17121d;box-shadow:0 0 0 4px #666}
+.lightbox figcaption{margin-top:.8rem;color:#fff;font-size:.8rem}
+.lightbox-close{position:fixed;top:1rem;right:1rem;width:48px;height:48px;border:4px solid #17121d;background:#e7e9eb;color:#222;font-size:2rem;line-height:1;z-index:51}
+@media(max-width:700px){
+ .portfolio-intro{grid-template-columns:1fr}
+ .portfolio-grid{grid-template-columns:1fr}
+ .portfolio-section-title{align-items:flex-start;flex-direction:column}
+ .portfolio-cta{flex-direction:column;align-items:stretch}
+ .portfolio-cta-buttons{flex-wrap:wrap}
+ .portfolio-cta-buttons button{flex:1}
+}
+
+.project-content{display:flex;flex-direction:column;width:100%;margin:0}
+.project{background:var(--mc-bg);width:100%;display:flex;flex-direction:row;align-items:center;gap:1.25rem;padding:clamp(.8rem,2vw,1.25rem);margin:0}
+.project-content .title{z-index:1}
+.project-content img{margin:0}
+.project-content p{align-self:flex-start;margin-bottom:1rem}
+.project-content h2{color:var(--mc-text);filter:none}
+.project-content .minecraft-inset-box{width:100%;margin:0}
+.icon{width:clamp(64px,10vw,110px);aspect-ratio:1;object-fit:cover;flex:none}
+.galleries{background:var(--mc-bg);width:100%;display:flex;align-items:center;justify-content:center;margin:0;z-index:0;overflow:hidden}
+.carousel{display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;width:100%}
+.carousel-navigation{display:flex;justify-content:center;align-items:center;gap:15px;margin:16px 0 8px;padding:8px;width:auto}
+.carousel-navigation.minecraft-inset-box{width:auto;height:auto;transform:none}
+.carousel-track{display:flex;width:100%;transition:transform .5s ease}
+.carousel-slide{min-width:100%;display:flex;justify-content:center;align-items:center;aspect-ratio:16/9;background:#17121d}
+.carousel-slide img,.carousel-slide iframe{width:100%;height:100%;object-fit:cover;border:0}
+.carousel-indicators{display:flex;gap:4px;max-width:50vw;overflow:auto}
+.carousel-indicators button{min-width:36px!important;padding:8px!important;margin:0!important;font-size:.7rem!important}
+.carousel-btn.prev,.carousel-btn.next{position:static}
+.panorama-container{width:100%;height:clamp(220px,40vw,450px);overflow:hidden;cursor:grab;position:relative;background:#17121d;touch-action:pan-y}
+.panorama{display:block;height:100%;width:auto;max-width:none;user-select:none;pointer-events:none}
+@media(max-width:650px){
+ .project{flex-direction:column;align-items:flex-start}
+ .icon{width:96px}
+ .project-content .minecraft-title-box{font-size:1rem}
+}
+
+.title{font-size:clamp(1rem,1.7vw,1.25rem);line-height:1.5;text-align:center}
+.minecraft-title-box{width:100%}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:0}
+.grid img{width:32px;height:32px;margin-right:8px;pointer-events:none;object-fit:contain}
+.about p{margin:0;max-width:900px;margin-inline:auto}
+.item{display:flex;align-items:center;justify-content:center;gap:4px;padding:16px 10px;min-height:60px;transition:transform .1s ease;color:var(--mc-text);text-decoration:none;text-align:center}
+a.item{cursor:pointer}
+a.item:hover{transform:scale(1.04);z-index:10;color:var(--mc-green);text-decoration:underline}
+.contact{display:grid;gap:4px}.contact p{margin:0;padding:.7rem 1rem;background:#2d2e30;border-left:4px solid #58a83f}.contact a{word-break:break-word}</style>
+</head>
+<body>
+<canvas id="particle-canvas" aria-hidden="true"></canvas>
+<div class="background" aria-hidden="true"></div>
+
+<main class="site-container">
+  <section class="hero minecraft-box">
+    <div class="model-wrapper minecraft-inset-box">
+      <div id="skin_container"></div>
+    </div>
+    <div class="description">
+      <p class="eyebrow">MINECRAFT BEDROCK • TECHNICAL CONTENT</p>
+      <h1>Hello and Welcome!</h1>
+      <h1>I'm Alan</h1>
+      <p>
+        I am a <span id="age"></span>-year-old technical Minecraft Bedrock content developer,
+        experienced in addon development, technical animation and particle systems.
+      </p>
+      <p>
+        I've been playing Minecraft since version 0.10.5, released in 2015 — <span id="ageVersion"></span>
+        years ago — and I've been creating maps and addons since 2018 and working on Marketplace projects since 2019.
+      </p>
+      <p>I enjoy pushing the game beyond its obvious limits and turning unusual ideas into playable experiences.</p>
+    </div>
+  </section>
+
+  <section class="page-content minecraft-box" aria-label="Portfolio navigation">
+    <nav class="page-buttons" aria-label="Main sections">
+      <button class="page-button" data-page="Portfolio" type="button">Portfolio</button>
+      <button class="page-button" data-page="Projects" type="button">Projects</button>
+      <button class="page-button" data-page="About Me" type="button">About Me</button>
+      <button class="page-button" data-page="Contact" type="button">Contact</button>
+    </nav>
+    <hr>
+    <div id="page-container"></div>
+  </section>
+</main>
+
+<!-- The route content is embedded so the site never needs fetch(), including when index.html is opened with file://. -->
+<template id="route-Portfolio">
+<section class="portfolio-page">
+  <div class="minecraft-title-box portfolio-heading">
+    <span>Portfolio</span>
+  </div>
+
+  <div class="portfolio-intro minecraft-inset-box">
+    <div>
+      <p class="eyebrow">SELECTED WORK</p>
+      <h2>Building worlds, creatures and experiences for Minecraft Bedrock.</h2>
+      <p>
+        A selection of projects I've worked on across Marketplace content and personal development.
+        My focus is technical addon development, entity behavior, animation, particles, UI and boss encounters.
+      </p>
+    </div>
+    <div class="portfolio-stats">
+      <div><strong>2018</strong><span>Started creating addons</span></div>
+      <div><strong>2019</strong><span>Marketplace work</span></div>
+      <div><strong>∞</strong><span>Ideas still to build</span></div>
+    </div>
+  </div>
+
+  <div class="portfolio-section-title">
+    <h2>Featured projects</h2>
+    <p>Click any image to open it in full size.</p>
+  </div>
+
+  <div class="portfolio-grid">
+    <article class="portfolio-card minecraft-border">
+      <button class="portfolio-image-button lightbox-trigger" data-image="resources/textures/projects/Conflicting Honor/image_1.jpg" data-title="Conflicting Honor">
+        <img src="resources/textures/projects/Conflicting Honor/image_1.jpg" alt="Conflicting Honor screenshot" loading="lazy">
+      </button>
+      <div class="portfolio-card-body">
+        <span class="portfolio-tag">PERSONAL PROJECT</span>
+        <h3>Conflicting Honor</h3>
+        <p>A large personal project focused on custom mobs, combat, animation, effects and immersive boss encounters.</p>
+        <a href="https://modbay.org/mods/264-conflictic-honor.html" target="_blank" rel="noopener">View project ↗</a>
+      </div>
+    </article>
+
+    <article class="portfolio-card minecraft-border">
+      <button class="portfolio-image-button lightbox-trigger" data-image="resources/textures/projects/mowzies mobs/image_1.jpg" data-title="Mowzie's Mobs">
+        <img src="resources/textures/projects/mowzies mobs/image_1.jpg" alt="Mowzie's Mobs screenshot" loading="lazy">
+      </button>
+      <div class="portfolio-card-body">
+        <span class="portfolio-tag">MARKETPLACE</span>
+        <h3>Mowzie's Mobs</h3>
+        <p>Official Bedrock adaptation featuring custom creatures, advanced AI, structures, items and fluid animations.</p>
+        <a href="https://www.minecraft.net/es-es/marketplace/pdp/honeyfrost/mowzie%E2%80%99s-mobs-add--on-1.1/9afc43e7-dc2c-44c0-a3b8-7107fa9da196" target="_blank" rel="noopener">Marketplace ↗</a>
+      </div>
+    </article>
+
+    <article class="portfolio-card minecraft-border">
+      <button class="portfolio-image-button lightbox-trigger" data-image="resources/textures/projects/gauntlets/image_1.jpg" data-title="Gauntlets">
+        <img src="resources/textures/projects/gauntlets/image_1.jpg" alt="Gauntlets screenshot" loading="lazy">
+      </button>
+      <div class="portfolio-card-body">
+        <span class="portfolio-tag">MARKETPLACE</span>
+        <h3>Gauntlets</h3>
+        <p>Boss-focused content with elemental encounters, magical gauntlets, islands, portals and custom progression.</p>
+        <a href="https://www.minecraft.net/en-us/marketplace/pdp/syclone-studios/gauntlets-boss-expansion/b8846ce9-3fa0-4df3-b0d9-41213c35e224" target="_blank" rel="noopener">Marketplace ↗</a>
+      </div>
+    </article>
+
+    <article class="portfolio-card minecraft-border">
+      <button class="portfolio-image-button lightbox-trigger" data-image="resources/textures/projects/RlCraft/image_1.jpg" data-title="RLCraft Bedrock Edition">
+        <img src="resources/textures/projects/RlCraft/image_1.jpg" alt="RLCraft Bedrock Edition screenshot" loading="lazy">
+      </button>
+      <div class="portfolio-card-body">
+        <span class="portfolio-tag">MARKETPLACE</span>
+        <h3>RLCraft Bedrock Edition</h3>
+        <p>An official Bedrock port of the well-known hardcore modpack, with progression, world generation and custom animation work.</p>
+        <a href="https://www.minecraft.net/es-es/marketplace/pdp/honeyfrost/rlcraft-bedrock-edition-1.0.2/062d87b7-819a-437d-9493-2a6603449220" target="_blank" rel="noopener">Marketplace ↗</a>
+      </div>
+    </article>
+  </div>
+
+  <div class="portfolio-cta minecraft-inset-box">
+    <div>
+      <h2>Want to see the technical side?</h2>
+      <p>Explore the Projects tab for galleries and details, or About Me for the tools and skills I use.</p>
+    </div>
+    <div class="portfolio-cta-buttons">
+      <button type="button" class="jump-page" data-page="Projects">Projects</button>
+      <button type="button" class="jump-page" data-page="About Me">About Me</button>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="portfolio-lightbox" aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="Close image">×</button>
+  <figure>
+    <img id="lightbox-image" src="" alt="">
+    <figcaption id="lightbox-caption"></figcaption>
+  </figure>
+</div>
+</template>
+<template id="route-Projects"><div class="project-content">
+    <h1 style="font-size: 3rem; filter: drop-shadow(8px 8px 0px #00000066);">Projects in which I have participated</h1>
+</div>
+<hr />
+<div class="project-content">
+    <div class="project minecraft-border">
+        <img class="icon minecraft-box" src="resources/textures/projects/mowzies mobs/pack_icon.png"
+            alt="Mowzies Mobs Icon">
+        <div>
+            <h1><a
+                    href="https://www.minecraft.net/es-es/marketplace/pdp/honeyfrost/mowzie%E2%80%99s-mobs-add--on-1.1/9afc43e7-dc2c-44c0-a3b8-7107fa9da196">Mowzie's
+                    Mobs</a></h1>
+            <p style="max-width: 800px;">
+                Official port of Mowzie's Mobs mod by <a
+                    href="https://www.curseforge.com/members/bobmowzie/projects">Bob Mowzie</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="project-content">
+    <div class="title minecraft-title-box">Details
+    </div>
+    <div class="project2 minecraft-inset-box">
+        <h1>Description</h1>
+        <p>Mowzie's Mobs adds a variety of fictional creatures to Minecraft, boasting unique AI, a rich atmosphere, and
+            fluid animations. Prove your might against new bosses and enemies and claim their magical abilities as your
+            own.
+            <br />
+            <br />
+            + Includes 12 unique mobs with new gameplay mechanics, structures, items, powers, and more!
+            <br />
+            + The official Mowzie's Mobs edition
+        </p>
+    </div>
+    <div class="title minecraft-title-box">Gallery
+    </div>
+    <div class="galleries minecraft-border">
+        <div class="carousel">
+            <div class="carousel-track">
+                <div class="carousel-slide">
+                    <iframe
+                        src="https://www.youtube.com/embed/Q1VMzRYIgmM?playsinline=1&rel=0&autoplay=0&enablejsapi=1&origin=https%3A%2F%2Fwww.minecraft.net&widgetid=1&forigin=https%3A%2F%2Fwww.minecraft.net%2Fes-es%2Fmarketplace%2Fpdp%2Fhoneyfrost%2Fmowzie%25E2%2580%2599s-mobs-add--on-1.1%2F9afc43e7-dc2c-44c0-a3b8-7107fa9da196&aoriginsup=1&gporigin=https%3A%2F%2Fwww.minecraft.net%2Fes-es%2Fmarketplace%2Fpdp%3Fid%3D9afc43e7-dc2c-44c0-a3b8-7107fa9da196&vf=6"
+                        frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/mowzies mobs/image_1.jpg"
+                        alt="Image 1"></div>
+                <div class="carousel-slide"><img src="resources/textures/projects/mowzies mobs/image_2.jpg"
+                        alt="Image 2"></div>
+                <div class="carousel-slide"><img src="resources/textures/projects/mowzies mobs/image_3.jpg"
+                        alt="Image 3"></div>
+                <div class="carousel-slide"><img src="resources/textures/projects/mowzies mobs/image_4.jpg"
+                        alt="Image 4"></div>
+                <div class="carousel-slide"><img src="resources/textures/projects/mowzies mobs/image_5.jpg"
+                        alt="Image 5"></div>
+            </div>
+            <div class="carousel-navigation minecraft-inset-box">
+                <button class="carousel-btn prev">&lt;</button>
+                <div class="carousel-indicators"></div>
+                <button class="carousel-btn next">&gt;</button>
+            </div>
+        </div>
+    </div>
+    <div class="title minecraft-title-box">
+    </div>
+    <div class="project2 minecraft-inset-box">
+        <h1>Panorama</h1>
+        <div class="panorama-container">
+            <img src="resources/textures/projects/mowzies mobs/panorama.jpg" alt="Panorama" class="panorama">
+        </div>
+    </div>
+</div>
+<hr />
+
+<div class="project-content">
+    <div class="project minecraft-border">
+        <img class="icon minecraft-box" src="resources/textures/projects/RlCraft/pack_icon.png" alt="RlCraft Icon">
+        <div>
+            <h1><a
+                    href="https://www.minecraft.net/es-es/marketplace/pdp/honeyfrost/rlcraft-bedrock-edition-1.0.2/062d87b7-819a-437d-9493-2a6603449220">RlCraft
+                </a></h1>
+            <p style="max-width: 800px;">
+                Official port of RlCraft modpack by <a
+                    href="https://www.curseforge.com/members/shivaxi/projects">Shivaxi</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="project-content">
+    <div class="title minecraft-title-box">Details
+    </div>
+    <div class="project2 minecraft-inset-box">
+        <h1>Description</h1>
+        <p>RLCraft is here. It's hardcore. It's unforgiving. It's unfair. It's the toughest, most realistic dynamic
+            world out there. GLHF.
+            <br />
+            <br />
+            + New world generation
+            <br />
+            + Level-up progression
+            <br />
+            + Custom animations (works with AS)
+            <br />
+            + Based on the original RLCraft Modpack by Shivaxi
+            <br />
+            + You're going to die... a lot
+            <br />
+            <br />
+            This item uses random starting areas for any new world. Endless possibilities!
+        </p>
+    </div>
+    <div class="title minecraft-title-box">Gallery
+    </div>
+    <div class="galleries minecraft-border">
+        <div class="carousel">
+            <div class="carousel-track">
+                <div class="carousel-slide">
+                    <iframe
+                        src="https://www.youtube.com/embed/h3BenLL7YCE?playsinline=1&rel=0&autoplay=0&enablejsapi=1&origin=https%3A%2F%2Fwww.minecraft.net&widgetid=1&forigin=https%3A%2F%2Fwww.minecraft.net%2Fes-es%2Fmarketplace%2Fpdp%2Fhoneyfrost%2Frlcraft-bedrock-edition-1.0.2%2F062d87b7-819a-437d-9493-2a6603449220&aoriginsup=1&gporigin=https%3A%2F%2Fwww.minecraft.net%2Fes-es%2Fmarketplace%2Fpdp%2Fhoneyfrost%2Fmowzie%25E2%2580%2599s-mobs-add--on-1.1%2F9afc43e7-dc2c-44c0-a3b8-7107fa9da196&vf=6"
+                        frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/RlCraft/image_1.jpg" alt="Image 1">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/RlCraft/image_2.jpg" alt="Image 2">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/RlCraft/image_3.jpg" alt="Image 3">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/RlCraft/image_4.jpg" alt="Image 4">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/RlCraft/image_5.jpg" alt="Image 5">
+                </div>
+            </div>
+            <div class="carousel-navigation minecraft-inset-box">
+                <button class="carousel-btn prev">&lt;</button>
+                <div class="carousel-indicators"></div>
+                <button class="carousel-btn next">&gt;</button>
+            </div>
+        </div>
+    </div>
+    <div class="title minecraft-title-box">
+    </div>
+    <div class="project2 minecraft-inset-box">
+        <h1>Panorama</h1>
+        <div class="panorama-container">
+            <img src="resources/textures/projects/RlCraft/panorama.jpg" alt="Panorama" class="panorama">
+        </div>
+    </div>
+</div>
+<hr />
+<div class="project-content">
+    <div class="project minecraft-border">
+        <img class="icon minecraft-box" src="resources/textures/projects/gauntlets/pack_icon.png" alt="Gauntlets Icon">
+        <div>
+            <h1><a
+                    href="https://www.minecraft.net/en-us/marketplace/pdp/syclone-studios/gauntlets-boss-expansion/b8846ce9-3fa0-4df3-b0d9-41213c35e224">Gauntlets
+                </a></h1>
+            <p style="max-width: 800px;">
+                A Gauntlet Styled Bossfights by <a href="https://www.ovout.net/">Ovout Studios</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="project-content">
+    <div class="title minecraft-title-box">Details
+    </div>
+    <div class="project2 minecraft-inset-box">
+        <h1>Description</h1>
+        <p>Defend the kingdom from four elemental supernatural bosses with guidance from the Wise Elder and gauntlets
+            for magical powers against enemies.
+            <br />
+            <br />
+            + Wear gauntlets for magical powers
+            <br />
+            + Portals to 4 islands of the kingdom
+            <br />
+            + Custom trades
+            <br />
+            + Custom blocks
+            <br />
+            + 1-3 players
+            <br />
+            + From Ovout & Syclone Studios
+        </p>
+    </div>
+    <div class="title minecraft-title-box">Gallery
+    </div>
+    <div class="galleries minecraft-border">
+        <div class="carousel">
+            <div class="carousel-track">
+                <div class="carousel-slide">
+                    <iframe src="https://youtube.com/embed/fYvI6RXeDVk" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/gauntlets/image_1.jpg" alt="Image 1">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/gauntlets/image_2.jpg" alt="Image 2">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/gauntlets/image_3.jpg" alt="Image 3">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/gauntlets/image_4.jpg" alt="Image 4">
+                </div>
+            </div>
+            <div class="carousel-navigation minecraft-inset-box">
+                <button class="carousel-btn prev">&lt;</button>
+                <div class="carousel-indicators"></div>
+                <button class="carousel-btn next">&gt;</button>
+            </div>
+        </div>
+    </div>
+    <div class="title minecraft-title-box">
+    </div>
+    <div class="project2 minecraft-inset-box">
+        <h1>Panorama</h1>
+        <div class="panorama-container">
+            <img src="resources/textures/projects/gauntlets/panorama.jpg" alt="Panorama" class="panorama">
+        </div>
+    </div>
+</div>
+<hr />
+<div class="project-content">
+    <div class="project minecraft-border">
+        <img class="icon minecraft-box" src="resources/textures/projects/Conflicting Honor/pack_icon.png"
+            alt="Conflicting Honor Icon">
+        <div>
+            <h1><a href="https://modbay.org/mods/264-conflictic-honor.html">Conflicting Honor
+                </a></h1>
+            <p style="max-width: 800px;">
+                My biggest personal project, my masterpiece by <a href="https://www.youtube.com/@AlanCape3313">AlanCape
+                    (Me)</a>.
+            </p>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="project-content">
+    <div class="title minecraft-title-box">Details
+    </div>
+    <div class="project2 minecraft-inset-box">
+        <h1>Description</h1>
+        <p>Conflictic Honor addon provides a variety of mobs with the aim of bringing a new experience and perspective
+            to the Minecraft Bedrock game with unique battles, great animations, effects, and sounds.
+            <br />
+            <br />
+            Challenge the orcish camps and village, fight with epic knights, face immersive combat with
+            enemies with advanced behavior, play smart or perish.
+        </p>
+    </div>
+    <div class="title minecraft-title-box">Gallery
+    </div>
+    <div class="galleries minecraft-border">
+        <div class="carousel">
+            <div class="carousel-track">
+                <div class="carousel-slide">
+                    <iframe src="https://youtube.com/embed/AvCQTOEqK9E" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_1.jpg" alt="Image 1">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_2.jpg" alt="Image 2">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_3.jpg" alt="Image 3">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_4.jpg" alt="Image 4">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_5.jpg" alt="Image 5">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_6.jpg" alt="Image 6">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_7.jpg" alt="Image 7">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_8.jpg" alt="Image 8">
+                </div>
+                <div class="carousel-slide"><img src="resources/textures/projects/Conflicting Honor/image_9.jpg" alt="Image 9">
+                </div>
+            </div>
+            <div class="carousel-navigation minecraft-inset-box">
+                <button class="carousel-btn prev">&lt;</button>
+                <div class="carousel-indicators"></div>
+                <button class="carousel-btn next">&gt;</button>
+            </div>
+        </div>
+    </div>
+    <div class="title minecraft-title-box">
+    </div>
+</div></template>
+<template id="route-About Me"><div class="title minecraft-inset-box">Overview</div>
+<div class="about">
+    <p>
+        As a developer, I mastered my skills over time, as I've always enjoyed creating in-game objects. 
+        I started like any kid, building, then creating basic maps with command blocks and redstone, until one day I entered the world of addons, and it was wonderful. 
+        I never left that world.
+        <br />
+        <br />
+        I'm passionate about creating anything, but I'm especially passionate about creating bossfights. 
+        I always created scenarios in my head of some epic fight to make them a reality in the game. 
+        It's what I enjoy creating the most, so entity development is what I'm most proficient at.
+        <br />
+        <br />
+        I love challenges. I love creating things that everyone thinks aren't possible in-game and then showing them off everywhere 😂. 
+        But generally, I'm passionate about the whole creation thing.
+    </p>
+</div>
+<hr />
+<div class="title minecraft-inset-box">Skills</div>
+<div class="grid">
+    <div class="item minecraft-box">Addon Developer</div>
+    <div class="item minecraft-box">World Gen Developer</div>
+    <div class="item minecraft-box">UI Developer</div>
+    <div class="item minecraft-box">Map Developer</div>
+    <div class="item minecraft-box">Molang Animator</div>
+    <div class="item minecraft-box">Keyframed Animator</div>
+    <div class="item minecraft-box">Particle Maker</div>
+</div>
+<hr />
+<div class="title minecraft-inset-box">Software Mastery</div>
+<div class="grid">
+    <a class="item minecraft-box" href="https://code.visualstudio.com/"><img src="resources/textures/icons/VSCode.png" alt="" />VSCode</a>
+    <a class="item minecraft-box" href="https://www.blockbench.net/"><img src="resources/textures/icons/Blockbench.png" alt="" />Blockbench</a>
+    <a class="item minecraft-box" href="https://github.com/SnaveSutit"><img src="resources/textures/icons/GitHub.png" alt="" />Github</a>
+    <a class="item minecraft-box" href="https://www.notion.com/"><img src="resources/textures/icons/notion.png" alt="" />Notion</a>
+    <a class="item minecraft-box" href="https://clickup.com/"><img src="resources/textures/icons/clickup.png" alt="" />ClickUp</a>
+    <a class="item minecraft-box" href="https://www.amuletmc.com/"><img src="resources/textures/icons/amulet.png" alt="" />Amulet Editor</a>
+    <a class="item minecraft-box" href="https://github.com/tryashtar/nbt-studio?tab=readme-ov-file"><img src="resources/textures/icons/nbtStudio.png" alt="" />NBT Studio</a>
+</div>
+<hr />
+<div class="title minecraft-inset-box">Language Mastery</div>
+<div class="grid">
+    <a class="item minecraft-box" href="https://www.oracle.com/developer/#programming-languages"><img src="resources/textures/icons/JavaScript.png" alt="" />JavaScript</a>
+    <a class="item minecraft-box" href="https://www.typescriptlang.org/"><img src="resources/textures/icons/typescript.svg" alt="" />TypeScript</a>
+</div>
+<hr />
+<div class="title minecraft-inset-box">Marketplace Studios I've worked on</div>
+<div class="grid">
+    <a class="item minecraft-box" href="https://honeyfrost.net/"><img src="resources/textures/icons/honeyfrost.png" alt="" />Honeyfrost</a>
+    <a class="item minecraft-box" href="https://www.ovout.net/"><img src="resources/textures/icons/ovout.png" alt="" />Ovout Studios</a>
+    <a class="item minecraft-box" href="https://www.youtube.com/@DragonClubStudios/featured"><img src="resources/textures/icons/dragonClub.png" alt="" />DragonClub</a>
+    <a class="item minecraft-box" href="https://www.youtube.com/@SapphireStudiosYT/featured"><img src="resources/textures/icons/sapphire.png" alt="" />Sapphire Studios</a>
+</div></template>
+<template id="route-Contact"><div class="contact">
+    <p>Email: <a href="mailto:alanezequielcapellino2003@gmail.com">alanezequielcapellino2003@gmail.com</a></p>
+    <p>Discord: <a href="https://discord.com/users/394429614526693376">AlanCape</a></p>
+    <p>Discord Server: <a href="https://discord.gg/anFUq4h">Alan Cape's [OFFICIAL✔]</a></p>
+    <p>Youtube Channel: <a href="https://www.youtube.com/@AlanCape3313">Alan Cape</a></p>
+</div></template>
+
+<footer><p>© 2026 AlanCape</p></footer>
+
+<script>
+(() => {
+  const birth = new Date(2003, 4, 20); // May 20 — JS months are zero-indexed.
+  const now = new Date();
+  let age = now.getFullYear() - birth.getFullYear();
+  if (now.getMonth() < birth.getMonth() ||
+      (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate())) age--;
+  document.getElementById("age").textContent = age;
+  document.getElementById("ageVersion").textContent = now.getFullYear() - 2015;
+})();
+</script>
+<script>
+(() => {
+  if (location.protocol !== "file:") return;
+  document.querySelectorAll("iframe[src*='youtube.com/embed/']").forEach(frame => {
+    const src = frame.src;
+    const match = src.match(/embed\/([^?]+)/);
+    if (!match) return;
+    const link = document.createElement("a");
+    link.href = "https://www.youtube.com/watch?v=" + match[1];
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.className = "youtube-local-fallback";
+    link.textContent = "Abrir video en YouTube";
+    link.style.cssText = "display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:180px;background:#0b0b0d;color:#fff;text-decoration:none;font-size:clamp(.9rem,2vw,1.1rem);";
+    frame.replaceWith(link);
+  });
+})();
+</script>
+<script src="behaviors/particles.js" defer></script>
+<script src="behaviors/main.js" defer></script>
+<script type="module" src="behaviors/player.js"></script>
+</body>
 </html>

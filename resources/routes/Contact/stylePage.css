@@ -1,3 +1,1 @@
-.contact p {
-    margin-left: 2%;
-}
+.contact{display:grid;gap:4px}.contact p{margin:0;padding:.7rem 1rem;background:#2d2e30;border-left:4px solid #58a83f}.contact a{word-break:break-word}

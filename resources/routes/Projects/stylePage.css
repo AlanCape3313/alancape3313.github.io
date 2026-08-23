@@ -1,132 +1,31 @@
-.project-content {
-    display: flex;
-    flex-direction: column;
-    margin-left: 16px;
-    margin-right: 16px;
-    width: 98%;
+
+.project-content{display:flex;flex-direction:column;width:100%;margin:0}
+.project{background:var(--mc-bg);width:100%;display:flex;flex-direction:row;align-items:center;gap:1.25rem;padding:clamp(.8rem,2vw,1.25rem);margin:0}
+.project-content .title{z-index:1}
+.project-content img{margin:0}
+.project-content p{align-self:flex-start;margin-bottom:1rem}
+.project-content h2{color:var(--mc-text);filter:none}
+.project-content .minecraft-inset-box{width:100%;margin:0}
+.icon{width:clamp(64px,10vw,110px);aspect-ratio:1;object-fit:cover;flex:none}
+.galleries{background:var(--mc-bg);width:100%;display:flex;align-items:center;justify-content:center;margin:0;z-index:0;overflow:hidden}
+.carousel{display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;width:100%}
+.carousel-navigation{display:flex;justify-content:center;align-items:center;gap:10px;margin:12px 0 8px;padding:6px;width:auto}
+.carousel-navigation.minecraft-inset-box{width:auto;height:auto;transform:none}
+.carousel-track{display:flex;width:100%;transition:transform .5s ease}
+.carousel-slide{min-width:100%;display:flex;justify-content:center;align-items:center;aspect-ratio:16/9;background:#171819}
+.carousel-slide img,.carousel-slide iframe{width:100%;height:100%;object-fit:cover;border:0}
+.carousel-indicators{display:flex;gap:4px;max-width:50vw;overflow:auto}
+.carousel-indicators button{min-width:32px!important;height:30px!important;min-height:30px!important;padding:5px 7px 10px!important;margin:0!important;font-size:.65rem!important}
+.carousel-btn.prev,.carousel-btn.next{position:static}
+.panorama-container{width:100%;height:clamp(220px,40vw,450px);overflow:hidden;cursor:grab;position:relative;background:#171819;touch-action:pan-y}
+.panorama{display:block;height:100%;width:auto;max-width:none;user-select:none;pointer-events:none}
+@media(max-width:650px){
+ .project{flex-direction:column;align-items:flex-start}
+ .icon{width:96px}
+ .project-content .minecraft-title-box{font-size:1rem}
 }
 
-.project {
-    background-color: var(--minecraft-background-color);
-    width: 96.1%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 16px;
-    margin: -0px 16px;
-}
+.carousel-slide iframe{display:block;object-fit:initial;background:#000}
+.model-error:after{content:"Player model could not be loaded";color:#cfc7d5;font-size:.8rem;text-align:center;padding:1rem}
 
-.project-content .title {
-    z-index: 1;
-}
-
-.project-content img {
-    margin-right: 32px;
-    margin-left: 8px;
-}
-
-.project-content p {
-    align-self: center;
-    margin-bottom: 5%;
-}
-
-.project-content h2 {
-    color: var(--minecraft-text-color);
-    filter: drop-shadow(0px 0px 0px #00000066);
-}
-.project-content .minecraft-inset-box {
-    width: 96.9%;
-    margin-left: 1%;
-}
-
-.icon {
-    width: 10%;
-    margin-bottom: 1%;
-}
-
-.minecraft-title-box {
-    width: 97%;
-    font-size: 1.5rem;
-    margin: 0px 0px;
-}
-
-.galleries {
-    background-color: var(--minecraft-background-color);
-    width: 98%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    margin: 0 1%;
-    z-index: 0;
-}
-
-.carousel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.carousel-navigation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 16px;
-    padding: 2%;
-}
-
-.carousel-navigation.minecraft-inset-box {
-    width: 100%;
-    height: 100%;
-    transform: scaleY(1.2);
-}
-
-.carousel-track {
-    display: flex;
-    transition: transform 0.5s ease;
-}
-
-.carousel-slide {
-    min-width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.carousel-slide img,
-.carousel-slide iframe {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-}
-
-.carousel-indicators {
-    display: flex;
-}
-
-.carousel-btn.prev {
-    left: 14px;
-}
-
-.carousel-btn.next {
-    right: 14px;
-}
-.panorama-container {
-  width: 100%;
-  height: 450px;
-  overflow: hidden;
-  cursor: grab;
-  position: relative;
-}
-
-.panorama {
-  display: block;
-  height: 100%;
-  width: auto;
-  user-select: none;
-  pointer-events: none;
-}
+@media(max-width:800px){.carousel-slide{aspect-ratio:16/10}.project-content h1{font-size:clamp(1.2rem,5vw,2rem)}}
