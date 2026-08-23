@@ -59,7 +59,7 @@ let anims; // Animations
 
 const loader = new GLTFLoader();
 let nameTagSprite;
-loader.load("../resources/models/player.gltf", (gltf) => {
+loader.load("./resources/models/player.gltf", (gltf) => {
     gltf.scene.scale.set(scaleModel, scaleModel, scaleModel);
     scene.add(gltf.scene);
 
