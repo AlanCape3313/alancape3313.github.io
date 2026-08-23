@@ -91,7 +91,34 @@
 .item{display:flex;align-items:center;justify-content:center;gap:4px;padding:16px 10px;min-height:60px;transition:transform .1s ease;color:var(--mc-text);text-decoration:none;text-align:center}
 a.item{cursor:pointer}
 a.item:hover{transform:scale(1.04);z-index:10;color:var(--mc-green);text-decoration:underline}
-.contact{display:grid;gap:4px}.contact p{margin:0;padding:.7rem 1rem;background:#2d2e30;border-left:4px solid #58a83f}.contact a{word-break:break-word}</style>
+.contact-page{display:flex;flex-direction:column;gap:clamp(1rem,2vw,1.5rem)}
+.contact-hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,.7fr);gap:1rem;align-items:stretch}
+.contact-intro,.availability-panel,.contact-card,.contact-services{background:#34263e}
+.contact-intro{padding:clamp(1.25rem,3vw,2rem)}
+.contact-kicker{color:#7ac95e;font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;margin:0 0 .65rem}
+.contact-intro h1{font-size:clamp(1.35rem,3vw,2.1rem);line-height:1.25;margin:0 0 .8rem;color:#fff}
+.contact-intro p{margin:0;max-width:760px}
+.availability-panel{padding:1.25rem;display:flex;flex-direction:column;justify-content:center;gap:.6rem}
+.availability-status{display:flex;align-items:center;gap:.65rem;color:#fff;font-size:.85rem}
+.availability-dot{width:12px;height:12px;background:#70d952;box-shadow:0 0 0 4px rgba(112,217,82,.13);animation:availabilityPulse 2s ease-in-out infinite}
+.availability-panel p{font-size:.72rem;margin:0}
+.contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.contact-card{display:flex;align-items:center;gap:1rem;padding:1.1rem;color:inherit;text-decoration:none;transition:transform .16s ease,filter .16s ease}
+.contact-card:hover,.contact-card:focus-visible{transform:translateY(-3px);filter:brightness(1.13)}
+.contact-icon{width:48px;height:48px;flex:none;display:grid;place-items:center;background:#17121d;border:2px solid #76617d;color:#7ac95e;font-size:1.2rem}
+.contact-card-copy{min-width:0}
+.contact-card-label{display:block;color:#aeb1b4;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem}
+.contact-card-value{display:block;color:#fff;font-size:.78rem;overflow-wrap:anywhere}
+.contact-card-action{display:block;color:#7ac95e;font-size:.62rem;margin-top:.45rem}
+.contact-services{padding:clamp(1.1rem,2.5vw,1.6rem)}
+.contact-services h2{margin:0 0 .9rem;color:#fff;font-size:1rem}
+.service-list{display:flex;flex-wrap:wrap;gap:.55rem}
+.service-chip{background:#2d2e30;border-left:4px solid #58a83f;padding:.65rem .8rem;color:#e7e9eb;font-size:.68rem}
+.contact-note{margin:0;text-align:center;font-size:.68rem;color:#aeb1b4}
+@keyframes availabilityPulse{50%{opacity:.55;transform:scale(.82)}}
+@media(max-width:720px){.contact-hero,.contact-grid{grid-template-columns:1fr}.contact-card{padding:.9rem}.contact-intro h1{font-size:1.35rem}}
+@media(prefers-reduced-motion:reduce){.availability-dot{animation:none}.contact-card{transition:none}}
+</style>
 </head>
 <body>
 <canvas id="particle-canvas" aria-hidden="true"></canvas>
@@ -516,6 +543,7 @@ a.item:hover{transform:scale(1.04);z-index:10;color:var(--mc-green);text-decorat
 <template id="route-About Me"><div class="title minecraft-inset-box">Overview</div>
 <div class="about">
     <p>
+        <br />
         As a developer, I mastered my skills over time, as I've always enjoyed creating in-game objects. 
         I started like any kid, building, then creating basic maps with command blocks and redstone, until one day I entered the world of addons, and it was wonderful. 
         I never left that world.
@@ -566,11 +594,52 @@ a.item:hover{transform:scale(1.04);z-index:10;color:var(--mc-green);text-decorat
     <a class="item minecraft-box" href="https://www.youtube.com/@DragonClubStudios/featured"><img src="resources/textures/icons/dragonClub.png" alt="" />DragonClub</a>
     <a class="item minecraft-box" href="https://www.youtube.com/@SapphireStudiosYT/featured"><img src="resources/textures/icons/sapphire.png" alt="" />Sapphire Studios</a>
 </div></template>
-<template id="route-Contact"><div class="contact">
-    <p>Email: <a href="mailto:alanezequielcapellino2003@gmail.com">alanezequielcapellino2003@gmail.com</a></p>
-    <p>Discord: <a href="https://discord.com/users/394429614526693376">AlanCape</a></p>
-    <p>Discord Server: <a href="https://discord.gg/anFUq4h">Alan Cape's [OFFICIAL✔]</a></p>
-    <p>Youtube Channel: <a href="https://www.youtube.com/@AlanCape3313">Alan Cape</a></p>
+<template id="route-Contact"><div class="contact-page">
+    <section class="contact-hero">
+        <div class="contact-intro minecraft-border">
+            <p class="contact-kicker">Let's build something memorable</p>
+            <h1>Need a Minecraft Bedrock experience that feels impossible?</h1>
+            <p>I create polished addons, memorable boss fights, custom entities, animation systems and technical gameplay built to stand out. Tell me what you want players to feel, and I will help shape the best way to build it.</p>
+        </div>
+        <aside class="availability-panel minecraft-border" aria-label="Availability">
+            <div class="availability-status"><span class="availability-dot" aria-hidden="true"></span><strong>Open to opportunities</strong></div>
+            <p>Available for commissions, studio collaboration and ambitious Bedrock projects.</p>
+        </aside>
+    </section>
+
+    <div class="title minecraft-inset-box">Choose your channel</div>
+    <section class="contact-grid" aria-label="Contact methods">
+        <a class="contact-card minecraft-box" href="mailto:alanezequielcapellino2003@gmail.com">
+            <span class="contact-icon" aria-hidden="true">@</span>
+            <span class="contact-card-copy"><span class="contact-card-label">Email</span><span class="contact-card-value">alanezequielcapellino2003@gmail.com</span><span class="contact-card-action">Send a project brief →</span></span>
+        </a>
+        <a class="contact-card minecraft-box" href="https://discord.com/users/394429614526693376" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon" aria-hidden="true">#</span>
+            <span class="contact-card-copy"><span class="contact-card-label">Discord</span><span class="contact-card-value">AlanCape</span><span class="contact-card-action">Message me directly →</span></span>
+        </a>
+        <a class="contact-card minecraft-box" href="https://discord.gg/anFUq4h" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon" aria-hidden="true">+</span>
+            <span class="contact-card-copy"><span class="contact-card-label">Community</span><span class="contact-card-value">Alan Cape's Official Server</span><span class="contact-card-action">Join the community →</span></span>
+        </a>
+        <a class="contact-card minecraft-box" href="https://www.youtube.com/@AlanCape3313" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon" aria-hidden="true">▶</span>
+            <span class="contact-card-copy"><span class="contact-card-label">YouTube</span><span class="contact-card-value">Alan Cape</span><span class="contact-card-action">See my work in motion →</span></span>
+        </a>
+    </section>
+
+    <section class="contact-services minecraft-border">
+        <h2>What I can bring to your project</h2>
+        <div class="service-list">
+            <span class="service-chip">Custom entities &amp; bosses</span>
+            <span class="service-chip">Molang &amp; keyframe animation</span>
+            <span class="service-chip">Gameplay systems</span>
+            <span class="service-chip">World generation</span>
+            <span class="service-chip">Particles &amp; visual effects</span>
+            <span class="service-chip">UI development</span>
+            <span class="service-chip">Technical problem solving</span>
+        </div>
+    </section>
+    <p class="contact-note">For the fastest reply, include your project scope, platform, timeframe and the kind of experience you want to create.</p>
 </div></template>
 
 <footer><p>© 2026 AlanCape</p></footer>

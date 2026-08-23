@@ -171,7 +171,7 @@ function setupAnimations() {
             rightLeg.position.y = -0.4
         })
         .setBoneAnimator('head', (head, q) => {
-            head.lookAt(q.mouse.x * 10, -q.mouse.y * 10, 5);
+            head.lookAt(q.mouse.x * 7, -q.mouse.y * 6, 5);
             head.scale.set(1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5);
         });
 
@@ -219,7 +219,7 @@ function setupAnimations() {
             leftLeg.rotation.z = t < 0.33 ? lerp(-0.05, -0.1, clamp(t * 3, 0, 1)) : t <= 2 ? -0.1 : lerp(-0.1 - Math.cos(t * 8) * 0.01, -0.05, clamp(t - 2, 0, 1));
         })
         .setBoneAnimator('head', (head, q) => {
-            head.lookAt(q.mouse.x * 10, -q.mouse.y * 10, 5);
+            head.lookAt(q.mouse.x * 7, -q.mouse.y * 6, 5);
             head.scale.set(1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5);
         })
         .setBoneAnimator('root', (root, q) => {
@@ -257,7 +257,7 @@ function setupAnimations() {
             const t = jumpClock.getElapsedTime();
             const val = clamp(Math.sin(t * 5) * 1, 0, 20);
 
-            head.lookAt(q.mouse.x * 10, (val * 5) - q.mouse.y * 10, 5);
+            head.lookAt(q.mouse.x * 7, (val * 5) - q.mouse.y * 6, 5);
             head.scale.set(1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5, 1 + q.mouseSpeed * 0.5);
         })
         .setBoneAnimator('rightArm', (rightArm, q) => {
@@ -343,10 +343,19 @@ function animate() {
 
 // === EVENTS ===
 window.addEventListener("mousemove", (e) => {
-    const x = (e.clientX / window.innerWidth) * 2 - 1;
-    const y = -(e.clientY / window.innerHeight) * 2 + 1;
-    mouse.lerp(new Vector2(x, y - 0.8).multiplyScalar(0.5), 0.2);
-    mouse.clampScalar(-2, 2);
+    const rect = renderer.domElement.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    // Calculate the pointer from the character canvas, rather than the viewport.
+    // Keep the model's original vertical orientation; only the horizontal
+    // reference is corrected to use the real center of the canvas.
+    const x = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+    const y = ((rect.top + rect.height / 2) - e.clientY) / (rect.height / 2);
+
+    mouse.set(
+        clamp(x, -1.15, 1.15),
+        clamp(y, -1.05, 1.05)
+    );
 });
 window.addEventListener('resize', () => {
     const container = mountPoint
